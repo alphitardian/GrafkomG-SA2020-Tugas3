@@ -1,23 +1,34 @@
 #include <iostream>
+#include <vector>
 #include <GL/freeglut.h>
 using namespace std;
 
+vector<char> keyList;
+
 void keyDownFun(unsigned char key, int x, int y) {
-	system("cls");
-	cout << key << " pressed" << endl;
+	cout << key << " ";
+
+	keyList.push_back(key);
+
+	//cout << "Ukuran : " << int(keyList.size()) << endl;
 }
 
 void keyUpFun(unsigned char key, int x, int y) {
-	system("cls");
-	cout << key << " pressed" << endl;
+	keyList.pop_back();
 }
 
+/*
 void mouseFun(int button, int state, int x, int y) {
-	if (button == GLUT_LEFT_BUTTON) {
-		system("cls");
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		cout << "X Coord : " << x << " | " << "Y Coord : " << y << endl;
 	}
 	glutPostRedisplay();
+}
+*/
+
+void motionFun(int x, int y) {
+	system("cls");
+	cout << "X : " << x << " Y : " << y << endl;
 }
 
 void display() {
@@ -44,7 +55,10 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyDownFun);
 	glutKeyboardUpFunc(keyUpFun);
-	glutMouseFunc(mouseFun);
+	//glutMouseFunc(mouseFun);
+	glutMotionFunc(motionFun);
+
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 
 	myInit();
 	glutMainLoop();
