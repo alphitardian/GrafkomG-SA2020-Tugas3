@@ -4,31 +4,47 @@
 using namespace std;
 
 vector<char> keyList;
+bool downState = false;
+int x_coord, y_coord;
 
-void keyDownFun(unsigned char key, int x, int y) {
-	cout << key << " ";
-
-	keyList.push_back(key);
-
-	//cout << "Ukuran : " << int(keyList.size()) << endl;
-}
-
-void keyUpFun(unsigned char key, int x, int y) {
-	keyList.pop_back();
-}
-
-/*
-void mouseFun(int button, int state, int x, int y) {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		cout << "X Coord : " << x << " | " << "Y Coord : " << y << endl;
+void displayResult() {
+	system("cls");
+	cout << "X Coord : " << x_coord << " | " << "Y Coord : " << y_coord << endl;
+	for (int i = 0; i < int(keyList.size()); i++) {
+		cout << keyList.at(i) << " ";
 	}
 	glutPostRedisplay();
 }
-*/
+
+void keyDownFun(unsigned char key, int x, int y) {
+	keyList.push_back(key);
+	displayResult();
+}
+
+void keyUpFun(unsigned char key, int x, int y) {
+	remove(keyList.begin(), keyList.end(), key);
+	keyList.pop_back();
+	displayResult();
+}
+
+
+void mouseFun(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		downState = true;
+	}
+	else {
+		downState = false;
+	}
+}
+
 
 void motionFun(int x, int y) {
-	system("cls");
-	cout << "X : " << x << " Y : " << y << endl;
+	if (downState == true) {
+		x_coord = x;
+		y_coord = y;
+	}
+
+	displayResult();
 }
 
 void display() {
@@ -55,7 +71,7 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyDownFun);
 	glutKeyboardUpFunc(keyUpFun);
-	//glutMouseFunc(mouseFun);
+	glutMouseFunc(mouseFun);
 	glutMotionFunc(motionFun);
 
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
