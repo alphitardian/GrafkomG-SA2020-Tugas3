@@ -50,7 +50,7 @@ void motionFun(int x, int y) {
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glFlush();
+	glutSwapBuffers();
 }
 
 void myInit() {
